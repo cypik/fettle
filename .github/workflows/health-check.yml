@@ -1,24 +1,30 @@
-name: Scheduled Health Check
-
-on:
-  schedule:
-    - cron: "*/5 * * * *"
-
 jobs:
   health_check_job:
     runs-on: ubuntu-latest
     name: Check all sites
+
     steps:
       - uses: actions/checkout@v2
+
+      # Set up SSH keys for pushing to GitHub
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Set up Git for committing
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+
+      # Run the health check script
       - name: Run Shell Script
         id: shell_script_run
         run: bash ./scripts/health-check.sh
+
+      # Commit and push via SSH
       - name: Commit health check logs
         run: |
           git add .
           git commit -m "[Automated] Update Health Check Logs"
-          git push https://x-access-token:${{ secrets.TOKEN }}@github.com/cypik/fettle.git HEAD:main
+          git push origin HEAD:main
