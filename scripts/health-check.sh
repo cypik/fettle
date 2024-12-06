@@ -12,12 +12,12 @@ declare -a URLSARRAY
 
 urlsConfig="public/urls.cfg"
 echo "Reading $urlsConfig"
-while IFS='=' read -r key url
-do
+while IFS='=' read -r key url || [ -n "$key" ]; do
   echo "  $key=$url"
   KEYSARRAY+=("$key")
   URLSARRAY+=("$url")
 done < "$urlsConfig"
+
 
 echo "***********************"
 echo "Starting health checks with ${#KEYSARRAY[@]} configs:"
