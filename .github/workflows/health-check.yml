@@ -15,12 +15,14 @@ jobs:
       - uses: actions/checkout@v2
 
       # Step 2: Set up SSH key for pushing to GitHub
-      - name: Set up SSH key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Create SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
 
-      # Step 3: Ensure SSH knows GitHub's host to avoid SSH verification issues
+      # Step 3: Add GitHub to known hosts
       - name: Add GitHub to known hosts
         run: |
           mkdir -p ~/.ssh
