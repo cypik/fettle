@@ -1,6 +1,5 @@
 name: Scheduled Health Check
 
-# Controls when the action will run.
 on:
   schedule:
     - cron: "*/5 * * * *"
@@ -11,6 +10,15 @@ jobs:
     name: Check all sites
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Git for committing
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
       - name: Run Shell Script
         id: shell_script_run
         run: bash ./scripts/health-check.sh
+      - name: Commit health check logs
+        run: |
+          git add .
+          git commit -m "[Automated] Update Health Check Logs"
+          git push https://x-access-token:${{ secrets.TOKEN }}@github.com/cypik/fettle.git HEAD:main
