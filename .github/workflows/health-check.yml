@@ -23,3 +23,8 @@ jobs:
       - name: Run Shell Script
         id: shell_script_run
         run: bash ./scripts/health-check.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          user_name: ${{ secrets.user_name }}
+          user_email: ${{ secrets.user_email }}
