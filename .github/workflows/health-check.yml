@@ -16,3 +16,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          user_name: ${{ github.user_name }}
+          user_email: ${{ github.user_email }}
