@@ -1,8 +1,9 @@
 name: Scheduled Health Check
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
 
 jobs:
   health_check_job:
